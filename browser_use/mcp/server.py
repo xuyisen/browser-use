@@ -192,7 +192,7 @@ class BrowserUseServer:
 	def _setup_handlers(self):
 		"""Setup MCP server handlers."""
 
-		@self.server.list_tools()
+		@self.server.list_tools()  # type: ignore[attr-defined]
 		async def handle_list_tools() -> list[types.Tool]:
 			"""List all available browser-use tools."""
 			return [
@@ -361,7 +361,7 @@ class BrowserUseServer:
 				),
 			]
 
-		@self.server.call_tool()
+		@self.server.call_tool()  # type: ignore[attr-defined]
 		async def handle_call_tool(name: str, arguments: dict[str, Any] | None) -> list[types.TextContent]:
 			"""Handle tool execution."""
 			start_time = time.time()

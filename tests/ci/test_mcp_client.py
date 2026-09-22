@@ -28,7 +28,7 @@ class MockMCPServer:
 	def _setup_handlers(self):
 		"""Setup MCP server handlers."""
 
-		@self.server.list_tools()
+		@self.server.list_tools()  # type: ignore[attr-defined]
 		async def handle_list_tools() -> list[types.Tool]:
 			"""List available test tools."""
 			return [
@@ -133,7 +133,7 @@ class MockMCPServer:
 				),
 			]
 
-		@self.server.call_tool()
+		@self.server.call_tool()  # type: ignore[attr-defined]
 		async def handle_call_tool(name: str, arguments: dict | None) -> list[types.TextContent]:
 			"""Handle tool execution."""
 			# Record the call
