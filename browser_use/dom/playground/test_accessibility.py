@@ -13,6 +13,8 @@ Run with: python browser_use/dom/tests/test_accessibility_playground.py
 """
 
 import asyncio
+import json
+import re
 
 from browser_use.browser.types import async_playwright
 
@@ -57,14 +59,36 @@ def print_all_fields(node, depth=0):
 			print_all_fields(child, depth + 1)
 
 
-def flatten_ax_tree(node, lines):
-	if not node:
+def flatten_ax_tree_from_aria_snapshot(snapshot_str, lines):
+	"""Parse an aria snapshot string and extract role/name pairs."""
+	if not snapshot_str:
 		return
-	role = node.get('role', '')
-	name = node.get('name', '')
-	lines.append(f'{role} {name}')
-	for child in node.get('children', []):
-		flatten_ax_tree(child, lines)
+
+	for line in snapshot_str.strip().split('\n'):
+		stripped = line.strip()
+		if not stripped.startswith('- '):
+			continue
+
+		# Remove the leading '- '
+		content = stripped[2:]
+
+		# Extract role from brackets
+		role_match = re.match(r'\[([^\]]+)\](.*)', content)
+		if role_match:
+			role = role_match.group(1)
+			rest = role_match.group(2).strip()
+
+			# Extract name from quotes (JSON stringified)
+			name = ''
+			if rest.startswith('"') and rest.endswith('"'):
+				try:
+					name = json.loads(rest)
+				except json.JSONDecodeError:
+					name = rest.strip('"')
+			elif rest:
+				name = rest
+
+			lines.append(f'{role} {name}')
 
 
 async def get_ax_tree(TARGET_URL):
@@ -74,9 +98,9 @@ async def get_ax_tree(TARGET_URL):
 		print(f'Navigating to {TARGET_URL}')
 		await page.goto(TARGET_URL, wait_until='domcontentloaded')
 
-		ax_tree_interesting = await page.accessibility.snapshot(interesting_only=True)
+		ax_tree_interesting = await page.aria_snapshot()
 		lines = []
-		flatten_ax_tree(ax_tree_interesting, lines)
+		flatten_ax_tree_from_aria_snapshot(ax_tree_interesting, lines)
 		print(lines)
 		print(f'length of ax_tree_interesting: {len(lines)}')
 
