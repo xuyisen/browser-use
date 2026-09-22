@@ -19,8 +19,15 @@ T = TypeVar('T', bound=BaseModel)
 
 
 VerifiedGeminiModels = Literal[
-	'gemini-2.0-flash', 'gemini-2.0-flash-exp', 'gemini-2.0-flash-lite-preview-02-05', 'Gemini-2.0-exp',
-	'gemma-3-27b-it', 'gemma-3-4b', 'gemma-3-12b', 'gemma-3n-e2b', 'gemma-3n-e4b'
+	'gemini-2.0-flash',
+	'gemini-2.0-flash-exp',
+	'gemini-2.0-flash-lite-preview-02-05',
+	'Gemini-2.0-exp',
+	'gemma-3-27b-it',
+	'gemma-3-4b',
+	'gemma-3-12b',
+	'gemma-3n-e2b',
+	'gemma-3n-e4b',
 ]
 
 
@@ -201,6 +208,7 @@ class ChatGoogle(BaseChatModel):
 			config['thinking_config'] = thinking_config_dict
 
 		async def _make_api_call():
+			nonlocal contents
 			if output_format is None:
 				# Return string response
 				response = await self.get_client().aio.models.generate_content(
@@ -278,7 +286,7 @@ class ChatGoogle(BaseChatModel):
 					# Fallback: Request JSON in the prompt for models without native JSON mode
 					# Add JSON instruction to the last message
 					if messages and isinstance(messages[-1].content, str):
-						json_instruction = f"\n\nPlease respond with a valid JSON object that matches this schema: {SchemaOptimizer.create_optimized_json_schema(output_format)}"
+						json_instruction = f'\n\nPlease respond with a valid JSON object that matches this schema: {SchemaOptimizer.create_optimized_json_schema(output_format)}'
 						messages[-1].content += json_instruction
 
 					# Re-serialize with modified messages
