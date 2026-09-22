@@ -4,6 +4,7 @@ import json
 import sys
 import tempfile
 from pathlib import Path
+from typing import Any, cast
 
 # Import MCP SDK for creating test server
 import mcp.server.stdio
@@ -28,7 +29,7 @@ class MockMCPServer:
 	def _setup_handlers(self):
 		"""Setup MCP server handlers."""
 
-		@self.server.list_tools()
+		@cast(Any, self.server).list_tools()
 		async def handle_list_tools() -> list[types.Tool]:
 			"""List available test tools."""
 			return [
@@ -60,7 +61,7 @@ class MockMCPServer:
 				),
 			]
 
-		@self.server.call_tool()
+		@cast(Any, self.server).call_tool()
 		async def handle_call_tool(name: str, arguments: dict | None) -> list[types.TextContent]:
 			"""Handle tool execution."""
 			# Record the call

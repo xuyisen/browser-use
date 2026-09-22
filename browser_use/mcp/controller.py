@@ -6,7 +6,7 @@ MCP tools are dynamically discovered and registered as browser-use actions.
 
 import asyncio
 import logging
-from typing import Any
+from typing import Any, cast
 
 from pydantic import Field, create_model
 
@@ -102,10 +102,10 @@ class MCPToolWrapper:
 		# Parse tool parameters to create Pydantic model
 		param_fields = {}
 
-		if tool.inputSchema:
+		if cast(Any, tool).inputSchema:
 			# MCP tools use JSON Schema for parameters
-			properties = tool.inputSchema.get('properties', {})
-			required = set(tool.inputSchema.get('required', []))
+			properties = cast(Any, tool).inputSchema.get('properties', {})
+			required = set(cast(Any, tool).inputSchema.get('required', []))
 
 			for param_name, param_schema in properties.items():
 				# Convert JSON Schema type to Python type
