@@ -183,7 +183,7 @@ async def setup_resource_blocking(browser_session: BrowserSession, block_images:
 			logger.warning(f'Error in resource blocking handler: {e}')
 			try:
 				await route.continue_()
-			except:
+			except Exception:
 				pass  # Route might already be handled
 
 	# Intercept all requests and apply blocking rules
