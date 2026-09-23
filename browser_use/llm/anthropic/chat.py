@@ -3,20 +3,20 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, TypeVar, overload
 
-import httpx
+import httpx2
 from anthropic import (
-	NOT_GIVEN,
 	APIConnectionError,
 	APIStatusError,
 	AsyncAnthropic,
 	NotGiven,
 	RateLimitError,
+	omit,
 )
 from anthropic.types import CacheControlEphemeralParam, Message, ToolParam
 from anthropic.types.model_param import ModelParam
 from anthropic.types.text_block import TextBlock
 from anthropic.types.tool_choice_tool_param import ToolChoiceToolParam
-from httpx import Timeout
+from httpx2 import Timeout
 from pydantic import BaseModel
 
 from browser_use.llm.anthropic.serializer import AnthropicMessageSerializer
@@ -45,7 +45,7 @@ class ChatAnthropic(BaseChatModel):
 	# Client initialization parameters
 	api_key: str | None = None
 	auth_token: str | None = None
-	base_url: str | httpx.URL | None = None
+	base_url: str | httpx2.URL | None = None
 	timeout: float | Timeout | None | NotGiven = NotGiven()
 	max_retries: int = 10
 	default_headers: Mapping[str, str] | None = None
@@ -141,7 +141,7 @@ class ChatAnthropic(BaseChatModel):
 				response = await self.get_client().messages.create(
 					model=self.model,
 					messages=anthropic_messages,
-					system=system_prompt or NOT_GIVEN,
+					system=system_prompt or omit,
 					**self._get_client_params_for_invoke(),
 				)
 
@@ -192,7 +192,7 @@ class ChatAnthropic(BaseChatModel):
 					model=self.model,
 					messages=anthropic_messages,
 					tools=[tool],
-					system=system_prompt or NOT_GIVEN,
+					system=system_prompt or omit,
 					tool_choice=tool_choice,
 					**self._get_client_params_for_invoke(),
 				)

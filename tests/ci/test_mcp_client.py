@@ -28,14 +28,14 @@ class MockMCPServer:
 	def _setup_handlers(self):
 		"""Setup MCP server handlers."""
 
-		@self.server.list_tools()
+		@self.server.list_tools()  # pyright: ignore
 		async def handle_list_tools() -> list[types.Tool]:
 			"""List available test tools."""
 			return [
 				types.Tool(
 					name='count_to_n',
 					description='Count from 1 to n and return the numbers',
-					inputSchema={
+					input_schema={  # pyright: ignore
 						'type': 'object',
 						'properties': {'n': {'type': 'integer', 'description': 'Number to count to'}},
 						'required': ['n'],
@@ -44,7 +44,7 @@ class MockMCPServer:
 				types.Tool(
 					name='echo_message',
 					description='Echo back a message with a prefix',
-					inputSchema={
+					input_schema={  # pyright: ignore
 						'type': 'object',
 						'properties': {
 							'message': {'type': 'string', 'description': 'Message to echo'},
@@ -56,12 +56,12 @@ class MockMCPServer:
 				types.Tool(
 					name='get_test_data',
 					description='Get some test data as JSON',
-					inputSchema={'type': 'object', 'properties': {}},
+					input_schema={'type': 'object', 'properties': {}},  # pyright: ignore
 				),
 				types.Tool(
 					name='process_trace_update',
 					description='Process a cognitive trace update with nested object parameter',
-					inputSchema={
+					input_schema={  # pyright: ignore
 						'type': 'object',
 						'properties': {
 							'trace': {
@@ -97,7 +97,7 @@ class MockMCPServer:
 				types.Tool(
 					name='process_array_data',
 					description='Process various array types',
-					inputSchema={
+					input_schema={  # pyright: ignore
 						'type': 'object',
 						'properties': {
 							'string_list': {
@@ -133,7 +133,7 @@ class MockMCPServer:
 				),
 			]
 
-		@self.server.call_tool()
+		@self.server.call_tool()  # pyright: ignore
 		async def handle_call_tool(name: str, arguments: dict | None) -> list[types.TextContent]:
 			"""Handle tool execution."""
 			# Record the call

@@ -196,7 +196,7 @@ class StorageStateWatchdog(BaseWatchdog):
 				storage_state = await self.browser_session._browser_context.storage_state()
 
 				# Update our last known state
-				self._last_cookie_state = storage_state.get('cookies', []).copy()
+				self._last_cookie_state = storage_state.get('cookies', []).copy()  # pyright: ignore
 
 				# Convert path to Path object
 				json_path = Path(save_path).expanduser().resolve()
