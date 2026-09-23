@@ -26,6 +26,7 @@ dependencies = [
     "markdownify==1.1.0",
     "mem0ai>=0.1.106",
     "patchright>=1.52.5",
+    "Pillow>=10.0.0",
     "playwright>=1.52.0",
     "posthog>=3.7.0",
     "psutil>=7.0.0",
@@ -180,7 +181,7 @@ dev-dependencies = [
     "ipdb>=0.13.13",
     "pre-commit>=4.2.0",
     "codespell>=2.4.1",
-    "pyright>=1.1.399",
+    "pyright>=1.1.399,<1.1.409",
     "ty>=0.0.1a1",
     "pytest-xdist>=3.7.0",
     # "pytest-playwright-asyncio>=0.7.0",  # not actually needed I think

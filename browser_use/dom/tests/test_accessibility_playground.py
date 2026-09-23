@@ -74,9 +74,16 @@ async def get_ax_tree(TARGET_URL):
 		print(f'Navigating to {TARGET_URL}')
 		await page.goto(TARGET_URL, wait_until='domcontentloaded')
 
-		ax_tree_interesting = await page.accessibility.snapshot(interesting_only=True)
+		aria_snapshot = await page.aria_snapshot()
 		lines = []
-		flatten_ax_tree(ax_tree_interesting, lines)
+		for line in aria_snapshot.strip().split('\n'):
+			line = line.strip()
+			if line:
+				parts = line.split(' ', 1)
+				if len(parts) == 2:
+					role = parts[0]
+					name = parts[1].strip('"')
+					lines.append(f'{role} {name}')
 		print(lines)
 		print(f'length of ax_tree_interesting: {len(lines)}')
 
