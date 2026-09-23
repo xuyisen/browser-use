@@ -46,3 +46,8 @@ CLAUDE.local.md
 uv.lock
 temp
 tmp
+# Shell redirection artifacts
+=[0-9]*
+>[0-9]*
+*.tmp
+*.log
