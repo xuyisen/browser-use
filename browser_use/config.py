@@ -11,7 +11,7 @@ from uuid import uuid4
 
 import psutil
 from pydantic import BaseModel, ConfigDict, Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict  # type: ignore[reportMissingImports]
 
 logger = logging.getLogger(__name__)
 

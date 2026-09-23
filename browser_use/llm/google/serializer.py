@@ -93,6 +93,6 @@ class GoogleMessageSerializer:
 			# Create the Content object
 			if message_parts:
 				final_message = Content(role=role, parts=message_parts)
-				formatted_messages.append(final_message)
+				formatted_messages.append(final_message)  # type: ignore[reportArgumentType]
 
 		return formatted_messages, system_message

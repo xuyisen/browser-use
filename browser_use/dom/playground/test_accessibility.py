@@ -74,7 +74,7 @@ async def get_ax_tree(TARGET_URL):
 		print(f'Navigating to {TARGET_URL}')
 		await page.goto(TARGET_URL, wait_until='load')
 
-		ax_tree_interesting = await page.accessibility.snapshot(interesting_only=True)
+		ax_tree_interesting = await page.accessibility.snapshot(interesting_only=True)  # type: ignore[reportAttributeAccessIssue]
 		lines = []
 		flatten_ax_tree(ax_tree_interesting, lines)
 		print(lines)
