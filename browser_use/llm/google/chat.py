@@ -159,7 +159,7 @@ class ChatGoogle(BaseChatModel):
 
 				response = await self.get_client().aio.models.generate_content(
 					model=self.model,
-					contents=contents,
+					contents=contents,  # type: ignore
 					config=config,
 				)
 
