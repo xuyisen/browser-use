@@ -194,7 +194,7 @@ def are_images_identical(img_path1: str, img_path2: str) -> bool:
 				return False
 
 			# Compare pixel data
-			return list(img1.getdata()) == list(img2.getdata())
+			return img1.get_flattened_data() == img2.get_flattened_data()
 	except Exception as e:
 		logger.warning(f'Failed to compare images {img_path1} and {img_path2}: {e}')
 		return False

@@ -4,12 +4,12 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, TypeVar, overload
 
 from anthropic import (
-	NOT_GIVEN,
 	APIConnectionError,
 	APIStatusError,
-	AsyncAnthropicBedrock,
 	RateLimitError,
+	omit,
 )
+from anthropic.lib.bedrock import AsyncAnthropicBedrock
 from anthropic.types import CacheControlEphemeralParam, Message, ToolParam
 from anthropic.types.text_block import TextBlock
 from anthropic.types.tool_choice_tool_param import ToolChoiceToolParam
@@ -99,20 +99,7 @@ class ChatAnthropicBedrock(ChatAWSBedrock):
 
 	def _get_client_params_for_invoke(self) -> dict[str, Any]:
 		"""Prepare client parameters dictionary for invoke."""
-		client_params = {}
-
-		if self.temperature is not None:
-			client_params['temperature'] = self.temperature
-		if self.max_tokens is not None:
-			client_params['max_tokens'] = self.max_tokens
-		if self.top_p is not None:
-			client_params['top_p'] = self.top_p
-		if self.top_k is not None:
-			client_params['top_k'] = self.top_k
-		if self.stop_sequences is not None:
-			client_params['stop_sequences'] = self.stop_sequences
-
-		return client_params
+		return {}
 
 	def get_client(self) -> AsyncAnthropicBedrock:
 		"""
@@ -160,8 +147,8 @@ class ChatAnthropicBedrock(ChatAWSBedrock):
 				response = await self.get_client().messages.create(
 					model=self.model,
 					messages=anthropic_messages,
-					system=system_prompt or NOT_GIVEN,
-					**self._get_client_params_for_invoke(),
+					max_tokens=self.max_tokens,
+					system=system_prompt or omit,
 				)
 
 				usage = self._get_usage(response)
@@ -202,10 +189,10 @@ class ChatAnthropicBedrock(ChatAWSBedrock):
 				response = await self.get_client().messages.create(
 					model=self.model,
 					messages=anthropic_messages,
+					max_tokens=self.max_tokens,
 					tools=[tool],
-					system=system_prompt or NOT_GIVEN,
+					system=system_prompt or omit,
 					tool_choice=tool_choice,
-					**self._get_client_params_for_invoke(),
 				)
 
 				usage = self._get_usage(response)

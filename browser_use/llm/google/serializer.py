@@ -1,6 +1,6 @@
 import base64
 
-from google.genai.types import Content, ContentListUnion, Part
+from google.genai.types import Content, ContentListUnion, ContentUnion, Part
 
 from browser_use.llm.messages import (
 	AssistantMessage,
@@ -33,7 +33,7 @@ class GoogleMessageSerializer:
 
 		messages = [m.model_copy(deep=True) for m in messages]
 
-		formatted_messages: ContentListUnion = []
+		formatted_messages: list[ContentUnion] = []
 		system_message: str | None = None
 
 		for message in messages:
