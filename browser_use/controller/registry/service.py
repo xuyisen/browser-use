@@ -5,7 +5,7 @@ import logging
 import re
 from collections.abc import Callable
 from inspect import Parameter, iscoroutinefunction, signature
-from typing import Any, Generic, Optional, TypeVar, Union, get_args, get_origin
+from typing import Any, Generic, Optional, TypeVar, Union, cast, get_args, get_origin
 
 from pydantic import BaseModel, Field, RootModel, create_model
 
@@ -39,7 +39,7 @@ class Registry(Generic[Context]):
 		self.telemetry = ProductTelemetry()
 		self.exclude_actions = exclude_actions if exclude_actions is not None else []
 
-	def _get_special_param_types(self) -> dict[str, type | None]:
+	def _get_special_param_types(self) -> dict[str, Any]:
 		"""Get the expected types for special parameters from SpecialActionParameters"""
 		# Manually define the expected types to avoid issues with Optional handling.
 		# we should try to reduce this list to 0 if possible, give as few standardized objects to all the actions
@@ -509,15 +509,16 @@ class Registry(Generic[Context]):
 
 		for name, action in available_actions.items():
 			# Create an individual model for each action that contains only one field
+			field_definitions: dict[str, Any] = {
+				name: (
+					action.param_model,
+					Field(description=action.description),
+				)
+			}
 			individual_model = create_model(
 				f'{name.title().replace("_", "")}ActionModel',
 				__base__=ActionModel,
-				**{
-					name: (
-						action.param_model,
-						Field(description=action.description),
-					)
-				},
+				**field_definitions,
 			)
 			individual_action_models.append(individual_model)
 
@@ -539,18 +540,18 @@ class Registry(Generic[Context]):
 				def get_index(self) -> int | None:
 					"""Delegate get_index to the underlying action model"""
 					if hasattr(self.root, 'get_index'):
-						return self.root.get_index()
+						return cast(Any, self.root).get_index()
 					return None
 
 				def set_index(self, index: int):
 					"""Delegate set_index to the underlying action model"""
 					if hasattr(self.root, 'set_index'):
-						self.root.set_index(index)
+						cast(Any, self.root).set_index(index)
 
 				def model_dump(self, **kwargs):
 					"""Delegate model_dump to the underlying action model"""
 					if hasattr(self.root, 'model_dump'):
-						return self.root.model_dump(**kwargs)
+						return cast(Any, self.root).model_dump(**kwargs)
 					return super().model_dump(**kwargs)
 
 			# Set the name for better debugging

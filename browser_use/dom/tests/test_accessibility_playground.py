@@ -13,6 +13,7 @@ Run with: python browser_use/dom/tests/test_accessibility_playground.py
 """
 
 import asyncio
+from typing import Any, cast
 
 from browser_use.browser.types import async_playwright
 
@@ -74,7 +75,7 @@ async def get_ax_tree(TARGET_URL):
 		print(f'Navigating to {TARGET_URL}')
 		await page.goto(TARGET_URL, wait_until='domcontentloaded')
 
-		ax_tree_interesting = await page.accessibility.snapshot(interesting_only=True)
+		ax_tree_interesting = await cast(Any, page).accessibility.snapshot(interesting_only=True)
 		lines = []
 		flatten_ax_tree(ax_tree_interesting, lines)
 		print(lines)
