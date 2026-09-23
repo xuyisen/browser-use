@@ -128,7 +128,7 @@ class ChatAnthropicBedrock(ChatAWSBedrock):
 	def name(self) -> str:
 		return str(self.model)
 
-	def _get_usage(self, response: Message) -> ChatInvokeUsage | None:
+	def _get_usage(self, response: Message) -> ChatInvokeUsage:
 		"""Extract usage information from the response."""
 		usage = ChatInvokeUsage(
 			prompt_tokens=response.usage.input_tokens
