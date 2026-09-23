@@ -195,7 +195,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_navigate',
 					description='Navigate to a URL in the browser',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'url': {'type': 'string', 'description': 'The URL to navigate to'},
@@ -207,7 +207,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_click',
 					description='Click an element on the page by its index',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'index': {
@@ -226,7 +226,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_type',
 					description='Type text into an input field',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'index': {
@@ -241,7 +241,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_get_state',
 					description='Get the current state of the page including all interactive elements',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'include_screenshot': {
@@ -255,7 +255,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_extract_content',
 					description='Extract structured content from the current page based on a query',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'query': {'type': 'string', 'description': 'What information to extract from the page'},
@@ -271,7 +271,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_scroll',
 					description='Scroll the page',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'direction': {
@@ -286,16 +286,16 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_go_back',
 					description='Go back to the previous page',
-					inputSchema={'type': 'object', 'properties': {}},
+					input_schema={'type': 'object', 'properties': {}},
 				),
 				# Tab management
 				types.Tool(
-					name='browser_list_tabs', description='List all open tabs', inputSchema={'type': 'object', 'properties': {}}
+					name='browser_list_tabs', description='List all open tabs', input_schema={'type': 'object', 'properties': {}}
 				),
 				types.Tool(
 					name='browser_switch_tab',
 					description='Switch to a different tab',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {'tab_index': {'type': 'integer', 'description': 'Index of the tab to switch to'}},
 						'required': ['tab_index'],
@@ -304,7 +304,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='browser_close_tab',
 					description='Close a tab',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {'tab_index': {'type': 'integer', 'description': 'Index of the tab to close'}},
 						'required': ['tab_index'],
@@ -313,7 +313,7 @@ class BrowserUseServer:
 				# types.Tool(
 				# 	name="browser_close",
 				# 	description="Close the browser session",
-				# 	inputSchema={
+				# 	input_schema={
 				# 		"type": "object",
 				# 		"properties": {}
 				# 	}
@@ -321,7 +321,7 @@ class BrowserUseServer:
 				types.Tool(
 					name='retry_with_browser_use_agent',
 					description='Retry a task using the browser-use agent. Only use this as a last resort if you fail to interact with a page multiple times.',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'task': {

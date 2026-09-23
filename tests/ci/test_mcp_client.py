@@ -35,7 +35,7 @@ class MockMCPServer:
 				types.Tool(
 					name='count_to_n',
 					description='Count from 1 to n and return the numbers',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {'n': {'type': 'integer', 'description': 'Number to count to'}},
 						'required': ['n'],
@@ -44,7 +44,7 @@ class MockMCPServer:
 				types.Tool(
 					name='echo_message',
 					description='Echo back a message with a prefix',
-					inputSchema={
+					input_schema={
 						'type': 'object',
 						'properties': {
 							'message': {'type': 'string', 'description': 'Message to echo'},
@@ -56,7 +56,7 @@ class MockMCPServer:
 				types.Tool(
 					name='get_test_data',
 					description='Get some test data as JSON',
-					inputSchema={'type': 'object', 'properties': {}},
+					input_schema={'type': 'object', 'properties': {}},
 				),
 			]
 
